@@ -476,7 +476,8 @@
                                 item: {
                                   images: {
                                     _id: asset.assets[0]._id,
-                                  }
+                                  },
+                                  _state: 1,
                                 }
                               };
 
