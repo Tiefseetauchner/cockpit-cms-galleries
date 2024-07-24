@@ -1,7 +1,7 @@
 <kiss-container class="kiss-margin-small">
 
     <ul class="kiss-breadcrumbs">
-        <li><a href="<?php echo $this->route('/gallery') ?>"><?php echo t('Gallery') ?></a></li>
+        <li><a href="<?php echo $this->route('/galleries') ?>"><?php echo t('Galleries') ?></a></li>
     </ul>
 
     <vue-view>
@@ -22,14 +22,14 @@
                     <input type="text" class="kiss-input" :placeholder="t('Filter galleries...')" v-model="filter">
                 </div>
 
-                <div class="animated fadeIn kiss-height-50vh kiss-flex kiss-flex-middle kiss-flex-center kiss-align-center kiss-color-muted kiss-margin-large" v-if="!singletons.length && !lists.length">
+                <div class="animated fadeIn kiss-height-50vh kiss-flex kiss-flex-middle kiss-flex-center kiss-align-center kiss-color-muted kiss-margin-large" v-if="!galleries.length">
                     <div>
                         <kiss-svg src="<?php echo $this->base('gallery:icon.svg') ?>" width="40" height="40"></kiss-svg>
                         <p class="kiss-size-large kiss-margin-top"><?php echo t('No galleries found') ?></p>
                     </div>
                 </div>
 
-                <div class="kiss-margin" v-if="lists.length">
+                <div class="kiss-margin" v-if="galleries.length">
 
                     <div class="kiss-margin kiss-text-caption kiss-text-bold kiss-color-muted kiss-size-small"><?php echo t('Galleries') ?></div>
 
@@ -39,12 +39,12 @@
                             <div class="kiss-cover kiss-flex kiss-flex-middle kiss-flex-center">
                                 <div :style="{color: gallery.color || 'inherit' }"><kiss-svg :src="$baseUrl(gallery.icon || 'gallery:assets/icons/'+gallery.type+'.svg')" width="30" height="30"></kiss-svg></div>
                             </div>
-                            <a class="kiss-cover" :href="$routeUrl(`/gallery/${gallery.type}/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
+                            <a class="kiss-cover" :href="$routeUrl(`/content/${gallery.type}/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
                         </div>
                         <div class="kiss-padding-small kiss-flex-1 kiss-position-relative">
                             <div class="kiss-size-small kiss-text-bold kiss-text-truncate">{{ gallery.label || gallery.name }}</div>
                             <div class="kiss-margin-xsmall-top kiss-color-muted kiss-size-xsmall kiss-text-truncate">{{gallery.info || gallery.type}}</div>
-                            <a class="kiss-cover" :href="$routeUrl(`/gallery/${gallery.type}/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
+                            <a class="kiss-cover" :href="$routeUrl(`/content/${gallery.type}/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
                         </div>
                         <a class="kiss-padding-small" @click="toggleGalleryActions(gallery)">
                             <icon>more_horiz</icon>
@@ -61,20 +61,20 @@
                     <div class="kiss-flex kiss-flex-middle">
                         <div class="kiss-flex-1"></div>
                         <?php if ($this->helper('acl')->isAllowed("gallery/manage")) : ?>
-                            <a class="kiss-button kiss-button-primary" href="<?php echo $this->route('/gallery/create') ?>"><?php echo t('Create gallery') ?></a>
+                            <a class="kiss-button kiss-button-primary" href="<?php echo $this->route('/galleries/create') ?>"><?php echo t('Create gallery') ?></a>
                         <?php endif ?>
                     </div>
                 </kiss-container>
 
             </app-actionbar>
 
-            <kiss-popout :open="actionModel && 'true'" @popoutclose="toggleModelActions(null)">
+            <kiss-popout :open="actionModel && 'true'" @popoutclose="toggleGalleryActions(null)">
                 <kiss-gallery>
                     <kiss-navlist v-if="actionModel">
                         <ul>
                             <li class="kiss-nav-header">{{ actionModel.label || actionModel.name }}</li>
                             <li v-if="actionModel.type=='collection'">
-                                <a class="kiss-flex kiss-flex-middle" :href="$routeUrl(`/gallery/collection/item/${actionModel.name}`)">
+                                <a class="kiss-flex kiss-flex-middle" :href="$routeUrl(`/content/collection/item/${actionModel.name}`)">
                                     <icon class="kiss-margin-small-right">add_circle</icon>
                                     <?php echo t('Create item') ?>
                                 </a>
@@ -117,8 +117,7 @@
                           return ['collection', 'tree'].includes(model.type) && (!this.group || this.group == model.group);
                       });
                 },
-
-              }
+              },
 
               mounted() {
                 this.load();
@@ -127,21 +126,18 @@
               methods: {
 
                 load() {
-
                     this.loading = true;
 
                     App.utils.getContentModels().then(galleries => {
                         this.galleries = Object.values(galleries)
                           .filter(model => {
-                            if (this.filter && !`${model.name} ${model.label}`.toLocaleLowerCase().includes('gallery_'.toLocaleLowerCase())) {
-                                  return false;
-                              }
+                            return `${model.name} ${model.label}`.toLowerCase().startsWith('gallery');
                           });
                         this.loading = false;
                     })
                 },
 
-                toggleModelActions(model) {
+                toggleGalleryActions(model) {
                     if (!model) {
                         setTimeout(() => this.actionModel = null, 300);
                         return;
@@ -178,7 +174,7 @@
 <kiss-navlist>
     <ul>
         <li>
-            <a class="kiss-link-muted kiss-flex kiss-flex-middle kiss-text-bold" href="<?php echo $this->route('/gallery') ?>">
+            <a class="kiss-link-muted kiss-flex kiss-flex-middle kiss-text-bold" href="<?php echo $this->route('/galleries') ?>">
                 <kiss-svg class="kiss-margin-small-right" src="<?php echo $this->base('gallery:icon.svg') ?>" width="20" height="20"><canvas width="20" height="20"></canvas></kiss-svg>
                 <?php echo t('Overview') ?>
             </a>
@@ -193,7 +189,7 @@
         <ul>
             <li class="kiss-nav-header kiss-margin-top kiss-margin-xsmall-bottom"><?php echo t('Create') ?></li>
             <li>
-                <a class="kiss-color-muted kiss-flex kiss-flex-middle" href="<?php echo $this->route('/gallery/create') ?>">
+                <a class="kiss-color-muted kiss-flex kiss-flex-middle" href="<?php echo $this->route('/galleries/create') ?>">
                     <kiss-svg class="kiss-margin-small-right" src="<?php echo $this->base('gallery:assets/icons/create.svg') ?>" width="20" height="20"><canvas width="20" height="20"></canvas></kiss-svg>
                     <?php echo t('Create Gallery') ?>
                 </a>

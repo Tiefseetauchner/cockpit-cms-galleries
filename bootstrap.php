@@ -27,24 +27,24 @@ $this->on(
 // content api
 $this->module('gallery')->extend(
     [
-    'createGallery' => function (string $name, array $data = []): mixed {
-        return $this->app->helper('content.model')->create("gallery_".$name, $data);
-    },
+        'createGallery' => function (string $name, array $data = []): mixed {
+            return $this->app->helper('content.model')->create($name, $data);
+        },
 
-    'removeGallery' => function (string $name): bool {
-        return $this->app->helper('content.model')->remove("gallery_".$name);
-    },
+        'removeGallery' => function (string $name): bool {
+            return $this->app->helper('content.model')->remove($name);
+        },
 
-    'galleries' => function (bool $extended = false): array {
-        return array_filter(
-            $this->app->helper('content.model')->models(), function ($model): bool {
-                return str_starts_with($model['name'], 'gallery_');
-            }
-        );
-    },
+        'galleries' => function (bool $extended = false): array {
+            return array_filter(
+                $this->app->helper('content.model')->models(), function ($model): bool {
+                    return str_starts_with($model['name'], 'gallery');
+                }
+            );
+        },
 
-    'gallery' => function (string $name): mixed {
-        return $this->app->helper('content.model')->model($name);
-    },
+        'gallery' => function (string $name): mixed {
+            return $this->app->helper('content.model')->model($name);
+        },
     ]
 );
