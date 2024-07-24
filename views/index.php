@@ -39,12 +39,12 @@
                             <div class="kiss-cover kiss-flex kiss-flex-middle kiss-flex-center">
                                 <div :style="{color: gallery.color || 'inherit' }"><kiss-svg :src="$baseUrl(gallery.icon || 'gallery:assets/icons/'+gallery.type+'.svg')" width="30" height="30"></kiss-svg></div>
                             </div>
-                            <a class="kiss-cover" :href="$routeUrl(`/content/${gallery.type}/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
+                            <a class="kiss-cover" :href="$routeUrl(`/galleries/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
                         </div>
                         <div class="kiss-padding-small kiss-flex-1 kiss-position-relative">
                             <div class="kiss-size-small kiss-text-bold kiss-text-truncate">{{ gallery.label || gallery.name }}</div>
                             <div class="kiss-margin-xsmall-top kiss-color-muted kiss-size-xsmall kiss-text-truncate">{{gallery.info || gallery.type}}</div>
-                            <a class="kiss-cover" :href="$routeUrl(`/content/${gallery.type}/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
+                            <a class="kiss-cover" :href="$routeUrl(`/galleries/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
                         </div>
                         <a class="kiss-padding-small" @click="toggleGalleryActions(gallery)">
                             <icon>more_horiz</icon>
