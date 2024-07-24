@@ -7,10 +7,10 @@ $this->on(
         $this->helper('menus')->addLink(
             'modules', [
             'label'  => 'Galleries',
-            'icon'   => 'galleries:icon.svg',
+            'icon'   => 'gallery:icon.svg',
             'route'  => '/galleries',
             'active' => false,
-            'group'  => 'Galleries',
+            'group'  => 'Content',
             'prio'   => 3
             ]
         );

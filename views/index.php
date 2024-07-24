@@ -37,7 +37,7 @@
                         <div class="kiss-position-relative kiss-padding-small kiss-bgcolor-contrast">
                             <canvas width="40" height="40"></canvas>
                             <div class="kiss-cover kiss-flex kiss-flex-middle kiss-flex-center">
-                                <div :style="{color: gallery.color || 'inherit' }"><kiss-svg :src="$baseUrl(gallery.icon || 'gallery:assets/icons/'+gallery.type+'.svg')" width="30" height="30"></kiss-svg></div>
+                                <div :style="{color: gallery.color || 'inherit' }"><kiss-svg :src="$baseUrl(gallery.icon || 'gallery:icon.svg')" width="30" height="30"></kiss-svg></div>
                             </div>
                             <a class="kiss-cover" :href="$routeUrl(`/galleries/items/${gallery.name}`)" :aria-label="gallery.label || gallery.name"></a>
                         </div>
@@ -182,8 +182,6 @@
     </ul>
 </kiss-navlist>
 
-<div class="kiss-margin" id="galleries-aside"></div>
-
 <?php if ($this->helper('acl')->isAllowed("content/:galleries/manage")) : ?>
     <kiss-navlist>
         <ul>
@@ -198,5 +196,18 @@
     </kiss-navlist>
 <?php endif ?>
 
+<div class="kiss-margin" id="galleries-aside"></div>
+
+<kiss-navlist>
+    <ul>
+        <li class="kiss-nav-header kiss-margin-top kiss-margin-xsmall-bottom"><?php echo t('Hey there!') ?></li>
+        <li>
+            I'm sorry for being kind of intrusive here, but this is really an alpha addon. So I wanted to make this clear. <br />
+            If you want to contribute, please do so at https://github.com/tiefseetauchner/cockpit-cms-galleries <br /><br />
+            Also, I'm very much new to both Cockpit CMS itself and Vue.js, so I'm sure there's improvements to be made. For example the icon is atrocious. Happy to take any help I can get! <br /><br />
+            Thanks for using! Best, Lena &lt;3
+        </li>
+    </ul>
+</kiss-navlist>
 
 <?php $this->end('app-side-panel') ?>
