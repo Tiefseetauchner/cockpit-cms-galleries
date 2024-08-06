@@ -18,13 +18,6 @@ $this->on(
 );
 
 $this->on(
-    'app.layout.assets', function (array &$assets) {
-
-        $assets[] = ['src' => 'content:assets/js/content.js', 'type' => 'module'];
-    }
-);
-
-$this->on(
     'app.permissions.collect', function ($permissions) {
 
         $permissions['Content'] = [
